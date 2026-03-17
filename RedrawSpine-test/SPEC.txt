@@ -1,0 +1,204 @@
+﻿RedrawSpine Project Specification
+
+-本文档是 RedrawSpine 项目的规范说明，详细描述了项目的目标、步骤、配置和进度。
+-所有编程相关的细节和技术要求都在这里定义，以确保项目的顺利进行。
+不得随意修改此文档，除非经过项目负责人批准。
+-收到用户给的编程和分析指令后，不要创建其他任何分析/总结/调试/过程记录/日志等等文档，也不要在任何地方记录这些内容。所有的分析/总结/调试/过程记录/
+日志等等都精炼最少的内容记录在本文档作为唯一技术和流程规格开发文档，严格执行这一点。
+-不要在编程/分析过程中创建大量冗余的.md文档和各种总结分析过程日志的markdown文档，所有的分析总结过程日志都精炼最少的内容记录在本文档作为唯一技术
+和流程规格开发文档，严格执行这一点。
+-copilot agent进行编程时，首先查看本文档了解项目目标和步骤，然后根据需要查看相关代码文件进行编程。
+-讨论技术方案时候，不要一味顺从用户的意愿，而是要根据项目目标和技术可行性提出合理的建议和方案，确保项目的成功实施。
+
+-目标是实现一个系统，能够将 Spine 角色动画的服装进行 AI 重绘，提升角色的视觉效果和多样性。
+-因为最终素材是要进入Unity引擎进行一套骨架和控制器绑定能适配不同服装和装备的角色动画，
+所以需要在Spine中进行骨架渲染和纹理处理的核心开发。
+
+游戏需要的男女2套骨骼，并且各自区分3种体型：
+男性：瘦弱、正常、健壮
+女性：瘦弱、正常、丰满
+最终目的是实现一个系统，能够将 Spine 角色动画的服装进行 AI 重绘，服装能匹配不同的体型，并且能够适配不同的骨架和控制器。
+-按照我的设计思路，是需要在Spine中建立一个超集网格（placeholder）来适配不同的骨架和控制器，然后通过AI重绘来生成不同体型的服装纹理，
+最后将这些纹理应用到Spine中进行渲染和动画。
+-比如不同的服装部件（上衣、裤子、鞋子等）需要分别进行重绘，并且这些部件需要能够适配不同的体型和骨架。
+-不同的部位铠甲和服装需要进行分层处理，以便在动画中能够正确显示和遮挡。
+
+第一阶段先进行女性正常体型的一套骨架和网格的开发和测试，确保系统能够正确处理服装重绘和适配不同体型的功能。
+
+Project Goal
+============
+将 Spine 角色动画的服装进行 AI 重绘,Spine软件只需初始设置和skeleton.json和attachments，重绘流程中Spine可关闭，
+核心开发在于Spine骨架渲染和纹理处理。
+
+Step 1: spine2restposepsd.py
+============================
+从 Spine 项目中导出 rest pose (静止姿态) 的 PSD 文件
+
+Step 2: preproccess.py
+======================
+分析哪些部件需要重绘，生成控制输入
+
+Step 3: UVmapping.py
+====================
+使用 Stable Diffusion 逐帧重绘，迭代更新附件纹理,必须等等webUI模型完整后才能运行
+
+Step 4: src/main.cpp
+====================
+Spine 骨架渲染和纹理处理的核心
+
+重绘流程运行要求
+==============
+
+1. 软件开启状态：
+   - Spine：需要 skeleton.json 和 attachments 已存在（可手动启动Spine设置，但执行重绘过程中Spine可关闭）
+   - WebUI：MUST 保持运行（脚本连续调用 webuiapi）
+   - Photoshop：仅在标记阶段需要（重绘流程中不需要）
+
+2. WebUI 模型/ControlNet 检查报告（2026.03.11）：
+   - 当前加载模型：anything-v5-PrtRE.safetensors [仅1个]
+   - 所需模型：meinapastel_v6Pastel.safetensors [缺失] ✗
+   - 所需VAE：klF8Anime2VAE_klF8Anime2VAE.safetensors [需验证]
+   - 所需ControlNet：control_v11p_sd15_canny [缺失] ✗
+   - 所需ControlNet：control_v11p_sd15_softedge [缺失] ✗
+   - webuiapi 版本限制：0.9.17不支持 util_get_vae_models/util_get_control_models
+   
+3. 解决方案：
+   - 需要在WebUI中下载/加载对应模型和ControlNet
+   - 建议更新 webuiapi 库或使用REST API直接查询
+   - 或修改 utility.py 指向当前可用的模型
+
+RedrawSpine
+通过魔改 Spine Runtime + 自定义 analyzer，建立 贴图UV ↔ RenderTarget像素 的映射，从而实现 多姿势、多轮重绘后回写贴图 的流程。 效果视频： 【StableDiffusion重绘Spine模型】 www.bilibili.com/video/BV1fhWzetE4D
+
+整体思路
+用 Spine + analyzer 找到关键姿势，并输出对应的 UV / mask / ctrl 信息。
+在 SD WebUI 中按序列重绘每个姿势。
+analyzer 将重绘结果回写到 attachment 贴图，进而渲染出下一帧姿势。
+多帧迭代后得到“完整的新贴图”。
+数据流（文字版流程图）
+SpineProject + attachments │ ├─> spine2restposepsd.py │ ├─ 导出 skeleton.json │ ├─ 生成 fake.atlas │ └─ 计算全动画 AABB -> PSD/rest.psd + meta.json(viewPort) │ ├─> Photoshop 标记重绘/不重绘 │ ├─ PSoutput/images (全量) │ └─ PSoutput/images1 (需重绘only) │ ├─> preproccess.py │ ├─ 生成 meta.json: slots / skipRedrawSlots │ ├─ analyzer 选关键帧 -> *.bin/@mask/@ctrl/sequence.txt │ └─ @ctrl.png -> @canny.png │ └─> UVmapping.py ├─ rest pose 整体重绘 ├─ analyzer 更新 attachments 并渲染下一帧 └─ 循环直到 sequence 结束 -> sdout//out
+
+目录约定
+SpineProject/：Spine 工程（含 *.spine 与 images/ attachments）
+PSD/：rest.psd + meta.json
+PSoutput/：PS2Spine 导出图层（含 images/ 与 images1/）
+PSoutput/redraw/：analyzer 生成的 UV/CTRL/mask/sequence
+PSoutput/inpaint/：整体重绘用的 template.png
+sdout/：每次重绘的输出目录（按 seed 分文件夹）
+快速开始（最小流程）
+准备 SpineProject/（含 attachments）。
+运行 spine2restposepsd.py 生成 PSD/rest.psd 与 meta.json。
+用 Photoshop 标记需要重绘/不重绘的 attachment（导出到 images / images1）。
+运行 preproccess.py 生成重绘素材（UV/mask/ctrl/canny/sequence）。
+运行 UVmapping.py 输出 sdout/<seed>/out/ 新贴图。
+详细流程说明
+1) spine2restposepsd.py
+遍历 Spine 工程附件，生成 fake.atlas（只记录尺寸）。
+调用 analyzer 计算所有动画姿势下最大的 AABB，作为 PSD 视口。
+导出 PSD/rest.psd，同时写入 PSD/meta.json 的 viewPort。
+2) Photoshop 标记 attachment
+用 PhotoshopToSpine.jsx 导出所有图层到 PSoutput/images。
+手动隐藏“不希望重绘”的图层（比如脸、头发），再导出到 PSoutput/images1。
+preproccess.py 会对比两个目录的 json 来计算 slots 与 skipRedrawSlots。
+也可以不依赖 Photoshop，直接在 preproccess.py 里手动写 slots/skipRedrawSlots。对于在rest pose时有attachment为隐藏状态的模型而言，在代码里手动添加甚至是必须的。比如由于艾米莉亚的动画会展示手的正面与背面，而restpose中对应背面的attachment被隐藏了，所以我手动在代码里把背面的衣袖加入了【需要】重绘，手掌、手指背面加入了【不需要】重绘。
+
+3) preproccess.py
+写入 meta.json：slots 与 skipRedrawSlots。
+调用 analyzer 选出关键姿势，并生成：
+*.bin：UV 映射
+@mask.png：部分重绘 mask
+@ctrl.png：ControlNet 输入
+sequence.txt：姿势顺序
+对 @ctrl.png 做 canny，生成 @canny.png。
+生成纯白 attachment，用于后续覆盖。
+4) UVmapping.py
+对每次换皮，按 sequence.txt 迭代：
+
+使用 @mask.png + @canny.png 对姿势进行 inpaint。
+将结果交给 analyzer 更新 attachment 贴图。
+analyzer 用更新后的贴图渲染下一帧，生成 i+1_.png。
+重复直到序列结束，最终在 sdout/<seed>/out/ 得到新贴图。
+参数配置说明（utility.py）
+常用字段：
+
+SD_HOST / SD_PORT：SD WebUI 地址
+SD_MODEL_NAME / SD_VAE_NAME：SD 模型与 VAE
+CONTROLNET_CANNY_MODEL：ControlNet canny 模型名
+DOWNSCALE：降采样倍数（影响 SD 输入尺寸）
+SPINE_APP_DIR / SPINE_PROJECT_DIR / SPINE_ATTACHMENTS_DIR：Spine 路径与工程目录
+ANALYZER_EXE：自定义 analyzer 路径
+attachment_groups 的设计意图
+preproccess.py 中的 attachment_groups 用于 在生成 ControlNet 输入时把一组 attachment 当作一个整体。 例：艾米莉亚的白色长筒靴被分为大腿/小腿/脚三部分，但原画中通过颜色与透明度过渡形成一体。 如果不分组，canny 会在交界处生成分界线，重绘后会出现膝盖/脚踝“断开”的违和感。 通过分组让它们共享同一 ID，避免这些分界线。
+
+analyzer 输入输出文件格式（概念级）
+输入：
+
+skeleton.json
+fake.atlas
+viewPort（cropX,cropY,cropW,cropH）
+-attachments 参数：包含需要重绘/跳过/分组信息
+可选 -frame <png>：将某帧重绘结果回写 attachment
+输出（到 PSoutput/redraw/）：
+
+*.bin：当前姿势的 UV 映射数据
+@mask.png：局部重绘 mask
+@ctrl.png：ControlNet 输入
+sequence.txt：姿势顺序
+以及渲染出的 i+1_.png（供下一次重绘）
+其他备注
+我已禁用 sd-webui-animatediff，怀疑 webuiapi 与新版 SD WebUI 不兼容。
+
+IDE集成方案
+============
+
+问题：如何用SLN形式以IDE驱动Spine和WebUI从而做到同步数据？
+
+答案：推荐混合方案（C#主控+C++核心）
+
+当前架构：
+- Python脚本通过subprocess调用C++ analyzer.exe
+- Python脚本通过webuiapi库调用Spine WebUI
+- Spine通过命令行（Spine -e）导出
+
+改进方案：
+【方案1】纯C#/.NET - 工作量最大，重写所有Python逻辑
+【方案2】混合C#/C++ - 推荐，中等工作量，最大IDE支持 ✓
+【方案3】Python+Rider - 改动最小，但IDE支持有限
+
+混合方案架构：
+Visual Studio SLN
+├── C++ 项目 → analyzer.dll
+│   ├── analyzer_getAABB()
+│   ├── analyzer_uv()
+│   └── analyzer_rgb()
+└── C# 项目 → Main Application
+    ├── DLL Wrapper (P/Invoke)
+    ├── Orchestrator (流程控制)
+    ├── Spine命令行执行
+    ├── WebUI API调用
+    └── Python脚本执行
+
+实现计划（6-8天）：
+1. 改造C++：改CMakeLists.txt生成DLL，抽取main.cpp为函数库 (2-3天)
+2. C#包装器：用P/Invoke封装DLL接口 (1-2天)
+3. Orchestrator：实现工作流控制程序 (2-3天)
+4. 测试验证：集成测试 (1-2天)
+
+数据流（IDE驱动）：
+IDE (Visual Studio/Rider)
+  ↓
+C# Orchestrator
+  ├→ Spine export + DLL getAABB()
+  ├→ Python preproccess + DLL uv()
+  └→ WebUI iterate + DLL rgb()
+  ↓
+所有数据写入磁盘（实时同步）
+
+优势：
++ 在一个IDE中完整管理整个工作流
++ 可调试C++核心和数据处理
++ 可创建UI展示进度
++ 保留Python脚本的灵活性
++ 支持渐进式迁移
+
+

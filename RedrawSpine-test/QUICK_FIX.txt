@@ -1,0 +1,47 @@
+﻿╔════════════════════════════════════════════════════════════════════════╗
+║                   Python 环境配置问题 - 快速参考                       ║
+╚════════════════════════════════════════════════════════════════════════╝
+
+【问题】
+✗ Rider 中选择 Python 3.13 仍显示"无效"
+✗ 之前的项目路径配置产生了残留信息
+
+【原因】
+IDE 配置文件保留了指向旧项目位置的虚拟环境配置
+- 旧位置: D:/迅雷下载/RedrawSpine-test
+- 新位置: F:\RedrawSpine-test
+- 因为旧路径不存在，IDE 验证失败
+
+【已完成的修复】
+✓ 清除了 IDE 全局 SDK 配置文件中的残留信息
+✓ 虚拟环境已验证: F:\RedrawSpine-test\.venv\Scripts\python.exe
+✓ Python 版本: 3.13.2
+
+【立即生效的步骤】
+1️⃣ 重启 Rider IDE（完全关闭并重新打开）
+
+2️⃣ 打开 Settings → Project → Python Interpreter
+
+3️⃣ 点击 "Add Interpreter" → "Add Local Interpreter"
+
+4️⃣ 选择现有环境，手动指定路径:
+   F:\RedrawSpine-test\.venv\Scripts\python.exe
+
+5️⃣ Apply 并 OK
+
+【预期结果】
+✓ Python 3.13.2 将被正确识别
+✓ 虚拟环境路径: F:\RedrawSpine-test\.venv
+
+【如果仍有问题】
+• 运行: .\fix_python_config.ps1 （诊断脚本）
+• 查看: PYTHON_CONFIG_FIX_README.md （完整文档）
+• 检查虚拟环境: .venv\Scripts\python.exe --version
+
+【关键信息】
+🔹 当前虚拟环境有效性: ✅ 已验证
+🔹 IDE 缓存已清理: ✅ 已清除
+🔹 等待您的操作: IDE 重启 + 手动选择解释器
+
+═══════════════════════════════════════════════════════════════════════════
+

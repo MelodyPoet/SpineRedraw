@@ -1,0 +1,348 @@
+a1A.png
+size: 700,700
+filter:Linear,Linear
+a1A
+bounds: 0,0,700,700
+
+BC_Hair1.png
+size: 56,129
+filter:Linear,Linear
+BC_Hair1
+bounds: 0,0,56,129
+
+BL_Hair1.png
+size: 80,133
+filter:Linear,Linear
+BL_Hair1
+bounds: 0,0,80,133
+
+BR_Hair1.png
+size: 92,135
+filter:Linear,Linear
+BR_Hair1
+bounds: 0,0,92,135
+
+B_Mant.png
+size: 35,20
+filter:Linear,Linear
+B_Mant
+bounds: 0,0,35,20
+
+Eff_002.png
+size: 51,102
+filter:Linear,Linear
+Eff_002
+bounds: 0,0,51,102
+
+Eff_003.png
+size: 51,102
+filter:Linear,Linear
+Eff_003
+bounds: 0,0,51,102
+
+Emt_Chick1.png
+size: 35,29
+filter:Linear,Linear
+Emt_Chick1
+bounds: 0,0,35,29
+
+Emt_Chick2.png
+size: 34,29
+filter:Linear,Linear
+Emt_Chick2
+bounds: 0,0,34,29
+
+Emt_Chick3.png
+size: 31,30
+filter:Linear,Linear
+Emt_Chick3
+bounds: 0,0,31,30
+
+Emt_Star.png
+size: 23,23
+filter:Linear,Linear
+Emt_Star
+bounds: 0,0,23,23
+
+Emt_WaiWai1.png
+size: 22,22
+filter:Linear,Linear
+Emt_WaiWai1
+bounds: 0,0,22,22
+
+Emt_WaiWai2.png
+size: 35,40
+filter:Linear,Linear
+Emt_WaiWai2
+bounds: 0,0,35,40
+
+Emt_WaiWai3.png
+size: 17,12
+filter:Linear,Linear
+Emt_WaiWai3
+bounds: 0,0,17,12
+
+Emt_WaiWai4.png
+size: 32,35
+filter:Linear,Linear
+Emt_WaiWai4
+bounds: 0,0,32,35
+
+Emt_WaiWai5.png
+size: 20,20
+filter:Linear,Linear
+Emt_WaiWai5
+bounds: 0,0,20,20
+
+Emt_WaiWai6.png
+size: 26,26
+filter:Linear,Linear
+Emt_WaiWai6
+bounds: 0,0,26,26
+
+Eye1.png
+size: 54,23
+filter:Linear,Linear
+Eye1
+bounds: 0,0,54,23
+
+Eye2.png
+size: 48,10
+filter:Linear,Linear
+Eye2
+bounds: 0,0,48,10
+
+Eye3.png
+size: 44,19
+filter:Linear,Linear
+Eye3
+bounds: 0,0,44,19
+
+Eye4.png
+size: 44,30
+filter:Linear,Linear
+Eye4
+bounds: 0,0,44,30
+
+EyeBrow.png
+size: 48,10
+filter:Linear,Linear
+EyeBrow
+bounds: 0,0,48,10
+
+EyeBrow2.png
+size: 48,9
+filter:Linear,Linear
+EyeBrow2
+bounds: 0,0,48,9
+
+EyeBrow3.png
+size: 49,8
+filter:Linear,Linear
+EyeBrow3
+bounds: 0,0,49,8
+
+EyeBrow4.png
+size: 48,11
+filter:Linear,Linear
+EyeBrow4
+bounds: 0,0,48,11
+
+F_Body.png
+size: 45,60
+filter:Linear,Linear
+F_Body
+bounds: 0,0,45,60
+
+F_Hair.png
+size: 96,102
+filter:Linear,Linear
+F_Hair
+bounds: 0,0,96,102
+
+F_Mant.png
+size: 44,36
+filter:Linear,Linear
+F_Mant
+bounds: 0,0,44,36
+
+F_Skirt.png
+size: 74,38
+filter:Linear,Linear
+F_Skirt
+bounds: 0,0,74,38
+
+Head.png
+size: 85,93
+filter:Linear,Linear
+Head
+bounds: 0,0,85,93
+
+L_Arm.png
+size: 29,27
+filter:Linear,Linear
+L_Arm
+bounds: 0,0,29,27
+
+L_Hair.png
+size: 58,44
+filter:Linear,Linear
+L_Hair
+bounds: 0,0,58,44
+
+L_Hand1.png
+size: 11,10
+filter:Linear,Linear
+L_Hand1
+bounds: 0,0,11,10
+
+L_Hand2.png
+size: 10,11
+filter:Linear,Linear
+L_Hand2
+bounds: 0,0,10,11
+
+L_Hand3.png
+size: 11,10
+filter:Linear,Linear
+L_Hand3
+bounds: 0,0,11,10
+
+L_Hand4.png
+size: 10,12
+filter:Linear,Linear
+L_Hand4
+bounds: 0,0,10,12
+
+L_Harm.png
+size: 19,19
+filter:Linear,Linear
+L_Harm
+bounds: 0,0,19,19
+
+L_Hleg.png
+size: 26,40
+filter:Linear,Linear
+L_Hleg
+bounds: 0,0,26,40
+
+L_Leg.png
+size: 25,31
+filter:Linear,Linear
+L_Leg
+bounds: 0,0,25,31
+
+Mouth1.png
+size: 10,4
+filter:Linear,Linear
+Mouth1
+bounds: 0,0,10,4
+
+Mouth2.png
+size: 18,12
+filter:Linear,Linear
+Mouth2
+bounds: 0,0,18,12
+
+Mouth3.png
+size: 16,13
+filter:Linear,Linear
+Mouth3
+bounds: 0,0,16,13
+
+Mouth4.png
+size: 20,10
+filter:Linear,Linear
+Mouth4
+bounds: 0,0,20,10
+
+Opt_Ribbon.png
+size: 14,22
+filter:Linear,Linear
+Opt_Ribbon
+bounds: 0,0,14,22
+
+R_Arm.png
+size: 26,30
+filter:Linear,Linear
+R_Arm
+bounds: 0,0,26,30
+
+R_Hair.png
+size: 70,56
+filter:Linear,Linear
+R_Hair
+bounds: 0,0,70,56
+
+R_Hand1.png
+size: 12,12
+filter:Linear,Linear
+R_Hand1
+bounds: 0,0,12,12
+
+R_Hand2.png
+size: 12,12
+filter:Linear,Linear
+R_Hand2
+bounds: 0,0,12,12
+
+R_Hand3.png
+size: 10,11
+filter:Linear,Linear
+R_Hand3
+bounds: 0,0,10,11
+
+R_Hand4.png
+size: 12,13
+filter:Linear,Linear
+R_Hand4
+bounds: 0,0,12,13
+
+R_Harm.png
+size: 18,24
+filter:Linear,Linear
+R_Harm
+bounds: 0,0,18,24
+
+R_Hleg.png
+size: 30,37
+filter:Linear,Linear
+R_Hleg
+bounds: 0,0,30,37
+
+R_Leg.png
+size: 28,32
+filter:Linear,Linear
+R_Leg
+bounds: 0,0,28,32
+
+Separater.png
+size: 6,6
+filter:Linear,Linear
+Separater
+bounds: 0,0,6,6
+
+Shadow.png
+size: 96,96
+filter:Linear,Linear
+Shadow
+bounds: 0,0,96,96
+
+T_Hair.png
+size: 47,32
+filter:Linear,Linear
+T_Hair
+bounds: 0,0,47,32
+
+Wep_SrtSwd000001_1.png
+size: 36,161
+filter:Linear,Linear
+Wep_SrtSwd000001_1
+bounds: 0,0,36,161
+
+Wep_SrtSwd000001_2.png
+size: 35,35
+filter:Linear,Linear
+Wep_SrtSwd000001_2
+bounds: 0,0,35,35
+
