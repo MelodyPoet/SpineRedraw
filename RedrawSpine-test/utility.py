@@ -19,11 +19,11 @@ SD_OUTPUT_DIR = "./sdout/"
 
 # SD 模型与 VAE（统一配置）
 SD_MODEL_NAME = "meinapastel_v6Pastel.safetensors [4679331655]"
-SD_VAE_NAME = "klF8Anime2VAE_klF8Anime2VAE.safetensors"
+SD_VAE_NAME = "Automatic"
 
 # ControlNet 模型名（WebUI 里的名字）
 CONTROLNET_CANNY_MODEL = "control_v11p_sd15_canny [d14c016b]"
-CONTROLNET_SOFTEDGE_MODEL = "control_v11p_sd15_softedge_fp16 [f616a34f]"
+CONTROLNET_SOFTEDGE_MODEL = "control_v11p_sd15_softedge [a8575a2a]"
 
 # 为了减少 StableDiffusion 运算量，将图片分辨率降低 DOWNSCALE 倍
 DOWNSCALE = 2
